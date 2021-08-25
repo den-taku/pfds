@@ -1,4 +1,6 @@
+use persistent::set::*;
 use persistent::stack::*;
+
 fn main() {
     println!("\nStack: ");
     let stack1 = List::<usize>::empty();
@@ -16,5 +18,22 @@ fn main() {
     println!("stack2: {:?}", stack2);
     println!("stack3: {:?}", stack3);
     println!("stack4: {:?}", stack4);
+    println!("");
+
+    println!("BinarySearchTree");
+    let tree1 = Tree::empty();
+    let tree2 = tree1.clone().insert("d");
+    println!("tree1: {:?}", tree1);
+    println!("tree2: {:?}", tree2);
+    let tree3 = tree2.clone().insert("b");
+    let tree4 = tree3.clone().insert("g");
+    let tree5 = tree4.clone().insert("a");
+    let tree6 = tree5.clone().insert("c");
+    let tree7 = tree6.clone().insert("f");
+    let tree8 = tree7.clone().insert("h");
+    let tree9 = tree8.clone().insert("e");
+    println!("tree8: {:?}", tree8);
+    println!("tree9: {:?}", tree9);
+    println!("{:?}", complete("d", 3));
     println!("");
 }

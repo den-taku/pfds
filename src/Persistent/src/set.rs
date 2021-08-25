@@ -9,14 +9,15 @@ pub trait Set {
     fn member(self: Rc<Self>, element: Self::Element) -> bool;
 }
 
-pub enum Tree<T: PartialOrd + PartialEq> {
+#[derive(Debug, Clone)]
+pub enum Tree<T: PartialOrd + PartialEq + Clone> {
     Leaf,
     Node(Rc<Tree<T>>, T, Rc<Tree<T>>),
 }
 
 impl<T> Set for Tree<T>
 where
-    T: PartialOrd + PartialEq,
+    T: PartialOrd + PartialEq + Clone,
 {
     type Element = T;
     fn empty() -> Rc<Self> {
@@ -29,9 +30,9 @@ where
                 if v == &element {
                     self.clone()
                 } else if v < &element {
-                    right.clone().insert(element)
+                    Rc::new(Node(left.clone(), v.clone(), right.clone().insert(element)))
                 } else {
-                    left.clone().insert(element)
+                    Rc::new(Node(left.clone().insert(element), v.clone(), right.clone()))
                 }
             }
         }
@@ -49,5 +50,14 @@ where
                 }
             }
         }
+    }
+}
+
+pub fn complete<T: PartialEq + PartialOrd + Clone>(x: T, d: usize) -> Rc<Tree<T>> {
+    if d == 0 {
+        Tree::empty()
+    } else {
+        let t = complete(x.clone(), d - 1);
+        Rc::new(Node(t.clone(), x.clone(), t.clone()))
     }
 }
