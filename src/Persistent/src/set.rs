@@ -28,7 +28,7 @@ where
             Leaf => Rc::new(Node(Set::empty(), element, Set::empty())),
             Node(left, v, right) => {
                 if v == &element {
-                    self.clone()
+                    self
                 } else if v < &element {
                     Rc::new(Node(left.clone(), v.clone(), right.clone().insert(element)))
                 } else {
