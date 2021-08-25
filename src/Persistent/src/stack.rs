@@ -10,14 +10,14 @@ pub trait Stack<T> {
 }
 
 #[derive(Debug, Clone)]
-pub enum List<T: Copy> {
+pub enum List<T> {
     Nil,
     Cons(T, Rc<List<T>>),
 }
 
 impl<T> Stack<T> for List<T>
 where
-    T: Copy,
+    T: Clone,
 {
     fn empty() -> Rc<Self> {
         Rc::new(Nil)
@@ -34,13 +34,23 @@ where
     fn head(&self) -> T {
         match self {
             Nil => panic!(),
-            Cons(v, _) => *v,
+            Cons(v, _) => v.clone(),
         }
     }
     fn tail(self: Rc<Self>) -> Rc<Self> {
-        match *self {
+        match &*self {
             Nil => panic!(),
-            Cons(_, _) => self.clone(),
+            Cons(_, tail) => tail.clone(),
         }
     }
+}
+
+pub fn suffixes<T: Clone>(list: Rc<List<T>>) -> Rc<List<Rc<List<T>>>> {
+    let mut list = list.clone();
+    let mut suf = List::empty();
+    while !list.is_empty() {
+        suf = Stack::cons(list.clone().tail(), suf.clone());
+        list = list.tail();
+    }
+    suf
 }
