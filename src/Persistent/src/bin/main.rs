@@ -35,5 +35,7 @@ fn main() {
     println!("tree8: {:?}", tree8);
     println!("tree9: {:?}", tree9);
     println!("{:?}", complete("d", 3));
+    println!("tree9.member(\"c\") is {}", tree9.member("c"));
+    println!("tree9.member(\"x\") is {}", tree9.member("x"));
     println!("");
 }

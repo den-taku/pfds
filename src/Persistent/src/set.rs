@@ -6,7 +6,7 @@ pub trait Set {
 
     fn empty() -> Rc<Self>;
     fn insert(self: Rc<Self>, element: Self::Element) -> Rc<Self>;
-    fn member(self: Rc<Self>, element: Self::Element) -> bool;
+    fn member(&self, element: Self::Element) -> bool;
 }
 
 #[derive(Debug, Clone)]
@@ -37,7 +37,7 @@ where
             }
         }
     }
-    fn member(self: Rc<Self>, element: Self::Element) -> bool {
+    fn member(&self, element: Self::Element) -> bool {
         match &*self {
             Leaf => false,
             Node(left, v, right) => {
