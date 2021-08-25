@@ -22,21 +22,22 @@ where
     fn empty() -> Rc<Self> {
         Rc::new(Nil)
     }
+
     fn is_empty(&self) -> bool {
-        match self {
-            Nil => true,
-            _ => false,
-        }
+        matches!(self, Nil)
     }
+
     fn cons(x: T, stack: Rc<Self>) -> Rc<Self> {
-        Rc::new(Cons(x, stack.clone()))
+        Rc::new(Cons(x, stack))
     }
+
     fn head(&self) -> T {
         match self {
             Nil => panic!(),
             Cons(v, _) => v.clone(),
         }
     }
+
     fn tail(self: Rc<Self>) -> Rc<Self> {
         match &*self {
             Nil => panic!(),
@@ -45,8 +46,7 @@ where
     }
 }
 
-pub fn suffixes<T: Clone>(list: Rc<List<T>>) -> Rc<List<Rc<List<T>>>> {
-    let mut list = list.clone();
+pub fn suffixes<T: Clone>(mut list: Rc<List<T>>) -> Rc<List<Rc<List<T>>>> {
     let mut suf = List::empty();
     while !list.is_empty() {
         suf = Stack::cons(list.clone().tail(), suf.clone());

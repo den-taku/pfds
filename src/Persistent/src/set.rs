@@ -20,9 +20,11 @@ where
     T: PartialOrd + PartialEq + Clone,
 {
     type Element = T;
+
     fn empty() -> Rc<Self> {
         Rc::new(Leaf)
     }
+
     fn insert(self: Rc<Self>, element: Self::Element) -> Rc<Self> {
         match &*self {
             Leaf => Rc::new(Node(Set::empty(), element, Set::empty())),
@@ -37,6 +39,7 @@ where
             }
         }
     }
+
     fn member(&self, element: Self::Element) -> bool {
         match &*self {
             Leaf => false,
@@ -58,6 +61,6 @@ pub fn complete<T: PartialEq + PartialOrd + Clone>(x: T, d: usize) -> Rc<Tree<T>
         Tree::empty()
     } else {
         let t = complete(x.clone(), d - 1);
-        Rc::new(Node(t.clone(), x.clone(), t.clone()))
+        Rc::new(Node(t.clone(), x, t))
     }
 }

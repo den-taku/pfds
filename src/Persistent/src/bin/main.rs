@@ -2,7 +2,8 @@ use persistent::set::*;
 use persistent::stack::*;
 
 fn main() {
-    println!("\nStack: ");
+    println!();
+    println!("Stack: ");
     let stack1 = List::<usize>::empty();
     if !stack1.is_empty() {
         panic!()
@@ -18,7 +19,7 @@ fn main() {
     println!("stack2: {:?}", stack2);
     println!("stack3: {:?}", stack3);
     println!("stack4: {:?}", stack4);
-    println!("");
+    println!();
 
     println!("BinarySearchTree:");
     let tree1 = Tree::empty();
@@ -38,5 +39,5 @@ fn main() {
     println!("{:?}", complete("d", 3));
     println!("tree9.member(\"c\") is {}", tree9.member("c"));
     println!("tree9.member(\"x\") is {}", tree9.member("x"));
-    println!("");
+    println!();
 }
