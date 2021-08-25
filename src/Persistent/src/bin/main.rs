@@ -20,7 +20,7 @@ fn main() {
     println!("stack4: {:?}", stack4);
     println!("");
 
-    println!("BinarySearchTree");
+    println!("BinarySearchTree:");
     let tree1 = Tree::empty();
     let tree2 = tree1.clone().insert("d");
     println!("tree1: {:?}", tree1);
