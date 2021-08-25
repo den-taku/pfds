@@ -5,6 +5,7 @@ pub trait Set {
     type Element;
 
     fn empty() -> Rc<Self>;
+    fn is_empty(&self) -> bool;
     fn insert(self: Rc<Self>, element: Self::Element) -> Rc<Self>;
     fn member(&self, element: Self::Element) -> bool;
 }
@@ -25,6 +26,10 @@ where
         Rc::new(Leaf)
     }
 
+    fn is_empty(&self) -> bool {
+        matches!(self, Leaf)
+    }
+
     fn insert(self: Rc<Self>, element: Self::Element) -> Rc<Self> {
         match &*self {
             Leaf => Rc::new(Node(Set::empty(), element, Set::empty())),
@@ -32,9 +37,17 @@ where
                 if v == &element {
                     self
                 } else if v < &element {
-                    Rc::new(Node(left.clone(), v.clone(), right.clone().insert(element)))
+                    Rc::new(Node(
+                        Rc::clone(left),
+                        v.clone(),
+                        Rc::clone(right).insert(element),
+                    ))
                 } else {
-                    Rc::new(Node(left.clone().insert(element), v.clone(), right.clone()))
+                    Rc::new(Node(
+                        Rc::clone(left).insert(element),
+                        v.clone(),
+                        Rc::clone(right),
+                    ))
                 }
             }
         }
@@ -47,9 +60,9 @@ where
                 if v == &element {
                     true
                 } else if v < &element {
-                    right.clone().member(element)
+                    Rc::clone(right).member(element)
                 } else {
-                    left.clone().member(element)
+                    Rc::clone(left).member(element)
                 }
             }
         }
@@ -61,6 +74,6 @@ pub fn complete<T: PartialEq + PartialOrd + Clone>(x: T, d: usize) -> Rc<Tree<T>
         Tree::empty()
     } else {
         let t = complete(x.clone(), d - 1);
-        Rc::new(Node(t.clone(), x, t))
+        Rc::new(Node(Rc::clone(&t), x, t))
     }
 }

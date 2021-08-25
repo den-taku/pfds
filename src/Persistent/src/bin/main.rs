@@ -1,5 +1,6 @@
 use persistent::set::*;
 use persistent::stack::*;
+use std::rc::Rc;
 
 fn main() {
     println!();
@@ -8,13 +9,19 @@ fn main() {
     if !stack1.is_empty() {
         panic!()
     }
-    let stack2 = Stack::cons(2, stack1.clone());
+    let stack2 = Stack::cons(2, Rc::clone(&stack1));
     println!("stack2: {:?}", stack2);
-    let stack3 = Stack::cons(3, stack2.clone());
+    let stack3 = Stack::cons(3, Rc::clone(&stack2));
     println!("stack3.head(): {}", stack3.head());
-    let stack4 = Stack::cons(4, stack3.clone());
-    println!("tail(stack4.clone()): {:?}", Stack::tail(stack4.clone()));
-    println!("suffixes(stack4.clone()): {:?}", suffixes(stack4.clone()));
+    let stack4 = Stack::cons(4, Rc::clone(&stack3));
+    println!(
+        "tail(stack4.clone()): {:?}",
+        Stack::tail(Rc::clone(&stack4))
+    );
+    println!(
+        "suffixes(stack4.clone()): {:?}",
+        suffixes(Rc::clone(&stack4))
+    );
     println!("stack1: {:?}", stack1);
     println!("stack2: {:?}", stack2);
     println!("stack3: {:?}", stack3);
@@ -23,7 +30,10 @@ fn main() {
 
     println!("BinarySearchTree:");
     let tree1 = Tree::empty();
-    let tree2 = tree1.clone().insert("d");
+    if !tree1.is_empty() {
+        panic!()
+    }
+    let tree2 = Rc::clone(&tree1).insert("d");
     println!("tree1: {:?}", tree1);
     println!("tree2: {:?}", tree2);
     let tree3 = tree2.insert("b");
@@ -31,8 +41,8 @@ fn main() {
     let tree5 = tree4.insert("a");
     let tree6 = tree5.insert("c");
     let tree7 = tree6.insert("f");
-    let tree8 = tree7.clone().insert("h");
-    let tree9 = tree8.clone().insert("e");
+    let tree8 = Rc::clone(&tree7).insert("h");
+    let tree9 = Rc::clone(&tree8).insert("e");
     println!("tree7: {:?}", tree7);
     println!("tree8: {:?}", tree8);
     println!("tree9: {:?}", tree9);

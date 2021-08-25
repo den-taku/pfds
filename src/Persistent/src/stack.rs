@@ -41,7 +41,7 @@ where
     fn tail(self: Rc<Self>) -> Rc<Self> {
         match &*self {
             Nil => panic!(),
-            Cons(_, tail) => tail.clone(),
+            Cons(_, tail) => Rc::clone(tail),
         }
     }
 }
@@ -49,7 +49,7 @@ where
 pub fn suffixes<T: Clone>(mut list: Rc<List<T>>) -> Rc<List<Rc<List<T>>>> {
     let mut suf = List::empty();
     while !list.is_empty() {
-        suf = Stack::cons(list.clone().tail(), suf.clone());
+        suf = Stack::cons(Rc::clone(&list).tail(), Rc::clone(&suf));
         list = list.tail();
     }
     suf
