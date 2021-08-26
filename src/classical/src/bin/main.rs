@@ -1,4 +1,4 @@
-use classical::heap::*;
+use classical::{bheap::*, heap::*, lheap::*};
 use std::rc::Rc;
 
 fn main() {
