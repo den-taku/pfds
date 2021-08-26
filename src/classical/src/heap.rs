@@ -39,7 +39,17 @@ where
     }
 
     fn insert(self: Rc<Self>, element: Self::Element) -> Rc<Self> {
-        Rc::new(Node(R::one(), element, Self::empty(), Self::empty())).merge(self)
+        let ept;
+        Rc::new(Node(
+            R::one(),
+            element,
+            {
+                ept = Self::empty();
+                Rc::clone(&ept)
+            },
+            ept,
+        ))
+        .merge(self)
     }
 
     fn merge(self: Rc<Self>, rhs: Rc<Self>) -> Rc<Self> {
