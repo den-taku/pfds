@@ -1,4 +1,5 @@
 use crate::set::Set;
+use if_chain::if_chain;
 use std::rc::Rc;
 use Color::*;
 use RedBlackTree::*;
@@ -20,9 +21,11 @@ where
     T: Clone,
 {
     fn balance(self: Rc<Self>) -> Rc<Self> {
-        if let Node(Black, left1, v1, right1) = &*self {
-            if let Node(color2, left2, v2, right2) = &**left1 {
-                if let Node(color3, left3, v3, right3) = &**right1 {
+        if_chain! {
+                if let Node(Black, left1, v1, right1) = &*self;
+                if let Node(color2, left2, v2, right2) = &**left1;
+                if let Node(color3, left3, v3, right3) = &**right1;
+                then {
                     match (&color2, &**left2, &**right2, &color3, &**left3, &**right3) {
                         (Red, Node(Red, a, x, b), _, _, _, _) => Rc::new(Node(
                             Red,
@@ -54,15 +57,10 @@ where
                             Rc::new(Node(Black, Rc::clone(c), z.clone(), Rc::clone(d))),
                         )),
                         _ => self,
-                    }
-                } else {
-                    self
                 }
             } else {
                 self
             }
-        } else {
-            self
         }
     }
 }
