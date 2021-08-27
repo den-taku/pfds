@@ -29,17 +29,8 @@ where
     }
 
     fn insert(self: Rc<Self>, element: Self::Element) -> Rc<Self> {
-        let ept;
-        Rc::new(Node(
-            R::one(),
-            element,
-            {
-                ept = Self::empty();
-                Rc::clone(&ept)
-            },
-            ept,
-        ))
-        .merge(self)
+        let ept = Self::empty();
+        Rc::new(Node(R::one(), element, Rc::clone(&ept), ept)).merge(self)
     }
 
     fn merge(self: Rc<Self>, rhs: Rc<Self>) -> Rc<Self> {
@@ -90,10 +81,10 @@ where
     }
 
     fn make_tree(e: T, tree1: Rc<Self>, tree2: Rc<Self>) -> Rc<Self> {
-        if Self::rank(&tree1) >= Self::rank(&tree2) {
-            Rc::new(Node(Self::rank(&tree2) + R::one(), e, tree1, tree2))
+        if tree1.rank() >= tree2.rank() {
+            Rc::new(Node(tree2.rank() + R::one(), e, tree1, tree2))
         } else {
-            Rc::new(Node(Self::rank(&tree1) + R::one(), e, tree2, tree1))
+            Rc::new(Node(tree1.rank() + R::one(), e, tree2, tree1))
         }
     }
 }
