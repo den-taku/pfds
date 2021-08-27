@@ -1,4 +1,4 @@
-use classical::{bheap::*, heap::*, lheap::*};
+use classical::{bheap::*, heap::*, lheap::*, red_black::*, set::*};
 use std::rc::Rc;
 
 fn main() {
@@ -29,8 +29,8 @@ fn main() {
         .insert(8)
         .insert(2)
         .merge(tree1.insert(9).insert(4));
-    println!("tree7: {:?}", tree7);
-    println!("tree7.delete_min(): {:?}", tree7.delete_min());
+    println!("tree7: {:#?}", tree7);
+    println!("tree7.delete_min(): {:#?}", tree7.delete_min());
     println!();
 
     println!("BinomialHeap:");
@@ -61,5 +61,27 @@ fn main() {
         .merge(tree1.insert(9).insert(4));
     println!("tree7: {:#?}", tree7);
     println!("tree7.delete_min(): {:#?}", tree7.delete_min());
+    println!();
+
+    println!("RedBlackTree:");
+    let tree1 = RedBlackTree::empty();
+    if !tree1.is_empty() {
+        panic!()
+    }
+    let tree2 = Rc::clone(&tree1).insert("d");
+    println!("tree1: {:?}", tree1);
+    println!("tree2: {:?}", tree2);
+    let tree3 = tree2.insert("b");
+    let tree4 = tree3.insert("g");
+    let tree5 = tree4.insert("a");
+    let tree6 = tree5.insert("c");
+    let tree7 = tree6.insert("f");
+    let tree8 = Rc::clone(&tree7).insert("h");
+    let tree9 = Rc::clone(&tree8).insert("e");
+    println!("tree7: {:?}", tree7);
+    println!("tree8: {:?}", tree8);
+    println!("tree9: {:#?}", tree9);
+    println!("tree9.member(\"c\") is {}", tree9.member("c"));
+    println!("tree9.member(\"x\") is {}", tree9.member("x"));
     println!();
 }

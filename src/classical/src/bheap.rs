@@ -9,7 +9,7 @@ pub struct BinomialHeap<T: PartialOrd + Clone, R: One + Zero + Copy + PartialOrd
 );
 
 #[derive(Debug, Clone)]
-pub enum Tree<T, R>
+enum Tree<T, R>
 where
     T: PartialOrd + Clone,
     R: One + Zero + Copy + PartialOrd,
